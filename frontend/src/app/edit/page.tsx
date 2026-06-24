@@ -3,12 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import * as pdfjsLib from 'pdfjs-dist';
 import { ArrowLeft, FileUp, Download, Plus, Save } from 'lucide-react';
-
-if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-}
 
 type Annotation = {
   id: string;
@@ -40,6 +35,10 @@ export default function EditPDF() {
   const renderPdfPage = async (selectedFile: File) => {
     try {
       const arrayBuffer = await selectedFile.arrayBuffer();
+      
+      const pdfjsLib = await import('pdfjs-dist');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+      
       const loadingTask = pdfjsLib.getDocument(new Uint8Array(arrayBuffer));
       const pdf = await loadingTask.promise;
       const page = await pdf.getPage(1);
@@ -58,7 +57,7 @@ export default function EditPDF() {
             canvasContext: context,
             viewport: viewport,
           };
-          await page.render(renderContext).promise;
+          await page.render(renderContext as unknown as Parameters<typeof page.render>[0]).promise;
         }
       }
     } catch (error) {
@@ -106,7 +105,7 @@ export default function EditPDF() {
       });
 
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setEditedPdfUrl(url);
     } catch (error) {

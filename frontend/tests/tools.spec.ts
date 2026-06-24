@@ -160,16 +160,16 @@ test.describe('LocalPDF Tools End-to-End Tests', () => {
     await page.goto('/convert');
 
     const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('label:has-text("Select Images")').click();
+    await page.locator('label:has-text("Select Files")').click();
     const fileChooser = await fileChooserPromise;
     
-    // We can reuse the screenshot.png from the OCR test
+    // We can reuse the screenshot.png from the OCR test (it's an image)
     await fileChooser.setFiles([
       path.join(__dirname, 'fixtures/screenshot.png')
     ]);
 
     // Verify file is loaded
-    await expect(page.locator('text=Selected Images (1)')).toBeVisible();
+    await expect(page.locator('text=Selected Files (1)')).toBeVisible();
 
     // Click Convert to PDF
     await page.click('button:has-text("Convert to PDF")');
