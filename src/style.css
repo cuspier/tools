@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
-  --bg-color: #f3f4f6;
+  --bg-color: #f0f2f5;
   --card-bg: #ffffff;
   --text-main: #1f2937;
   --text-light: #6b7280;
-  --border-color: #e5e7eb;
+  --border-color: #d1d5db;
+  --drop-bg: #f9fafb;
+  --drop-active-bg: #eef2ff;
+  --drop-active-border: #4f46e5;
 }
 
 * {
@@ -28,90 +31,138 @@ body {
 
 #app {
   width: 100%;
-  max-width: 600px;
+  max-width: 640px;
   padding: 20px;
 }
 
 .container {
   background-color: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  padding: 48px 40px;
   text-align: center;
 }
 
 h1 {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   margin-bottom: 8px;
   color: var(--text-main);
 }
 
 .container > p {
   color: var(--text-light);
-  font-size: 14px;
-  margin-bottom: 30px;
+  font-size: 15px;
+  margin-bottom: 36px;
 }
 
+/* ===== DROP ZONE ===== */
 .drop-zone {
-  border: 2px dashed var(--border-color);
-  border-radius: 12px;
-  padding: 40px 20px;
+  border: 3px dashed var(--border-color);
+  border-radius: 16px;
+  padding: 70px 30px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: #fafafa;
+  transition: all 0.25s ease;
+  background-color: var(--drop-bg);
+  position: relative;
 }
 
-.drop-zone:hover, .drop-zone.drag-active {
+/* Block child elements from stealing drag events */
+.drop-zone * {
+  pointer-events: none;
+}
+
+.drop-zone:hover {
   border-color: var(--primary-color);
-  background-color: #eff6ff;
+  background-color: var(--drop-active-bg);
+}
+
+.drop-zone.drag-active {
+  border-color: var(--drop-active-border);
+  background-color: var(--drop-active-bg);
+  border-style: solid;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
 }
 
 .upload-icon {
   color: var(--primary-color);
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .drop-text {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-main);
 }
 
-.support-text {
+.drop-subtext {
+  font-size: 13px;
   color: var(--text-light);
-  font-size: 12px;
+  margin-bottom: 16px;
+  display: block;
 }
 
+.format-badges {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.format-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #e0e7ff;
+  color: var(--primary-color);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ===== STATUS ===== */
 .status-hidden {
   display: none;
 }
 
 .status-visible {
   display: block;
-  margin-top: 25px;
-  padding: 15px;
-  background-color: #eff6ff;
+  margin-top: 28px;
+  padding: 16px 20px;
+  background-color: #eef2ff;
   color: var(--primary-color);
-  border-radius: 8px;
-  font-weight: 500;
+  border-radius: 12px;
+  font-weight: 600;
   font-size: 14px;
-  animation: pulse 2s infinite;
+  animation: pulse 1.8s infinite;
+}
+
+.status-success {
+  display: block;
+  margin-top: 28px;
+  padding: 16px 20px;
+  background-color: #ecfdf5;
+  color: #059669;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .status-error {
   display: block;
-  margin-top: 25px;
-  padding: 15px;
+  margin-top: 28px;
+  padding: 16px 20px;
   background-color: #fef2f2;
   color: #dc2626;
-  border-radius: 8px;
-  font-weight: 500;
+  border-radius: 12px;
+  font-weight: 600;
   font-size: 14px;
 }
 
 @keyframes pulse {
   0% { opacity: 1; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.65; }
   100% { opacity: 1; }
 }

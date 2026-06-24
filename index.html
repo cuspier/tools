@@ -2,12 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>Local PDF Converter</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <div class="container">
+        <h1>Local PDF Converter</h1>
+        <p>Convert your documents to PDF securely in your browser. Files never leave your PC.</p>
+
+        <div id="drop-zone" class="drop-zone">
+          <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <p class="drop-text">Drag & Drop your file here</p>
+          <span class="drop-subtext">or click anywhere in this area to browse</span>
+          <div class="format-badges">
+            <span class="format-badge">.DOCX</span>
+            <span class="format-badge">.XLS / .XLSX</span>
+            <span class="format-badge">.HWP</span>
+            <span class="format-badge">.TXT</span>
+          </div>
+          <input type="file" id="file-input" accept=".docx,.xlsx,.xls,.txt,.hwp" hidden />
+        </div>
+
+        <div id="status" class="status-hidden"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
