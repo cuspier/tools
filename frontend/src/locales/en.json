@@ -1,0 +1,132 @@
+{
+  "common": {
+    "title": "LocalPDF",
+    "allTools": "All Tools",
+    "privacyNotice": "100% Private Client-Side Processing. Your files never leave your browser.",
+    "selectFiles": "Select PDF Files",
+    "selectFile": "Select PDF File",
+    "download": "Download",
+    "back": "Back"
+  },
+  "tools": {
+    "merge": {
+      "title": "Merge PDF",
+      "description": "Combine multiple PDFs into a single document effortlessly."
+    },
+    "split": {
+      "title": "Split PDF",
+      "description": "Separate one page or a whole set for easy conversion into independent PDF files."
+    },
+    "rotate": {
+      "title": "Rotate PDF",
+      "description": "Rotate your PDFs the way you need them. You can even rotate multiple PDFs at once."
+    },
+    "watermark": {
+      "title": "Add Watermark",
+      "description": "Choose an image or text and stamp it over your PDF."
+    },
+    "edit": {
+      "title": "Edit PDF",
+      "description": "Add text, images, shapes or freehand annotations to a PDF document."
+    },
+    "ocr": {
+      "title": "OCR (Image to Text)",
+      "description": "Extract text from scanned PDFs or images easily."
+    },
+    "convert": {
+      "title": "Convert to PDF",
+      "description": "Convert JPG or PNG images into a PDF document entirely in your browser."
+    }
+  },
+  "home": {
+    "heroTitle": "Every tool you need to work with PDFs in one place",
+    "heroSubtitle": "100% Free, Secure, and Local. Your files never leave your browser. Edit, merge, split, and convert your PDFs with zero server uploads."
+  },
+  "merge": {
+    "selectPrompt": "Select PDF files to merge",
+    "selectedFiles": "Selected Files",
+    "buttonAction": "Merge PDFs Now",
+    "merging": "Merging...",
+    "success": "PDFs Merged Successfully!",
+    "downloadAction": "Download Merged PDF",
+    "more": "Merge more files",
+    "alertSelectTwo": "Please select at least 2 PDFs to merge.",
+    "alertError": "An error occurred while merging PDFs."
+  },
+  "split": {
+    "selectPrompt": "Select PDF file to split",
+    "pageRange": "Extract Page Range",
+    "from": "From Page",
+    "to": "To Page",
+    "buttonAction": "Extract Pages",
+    "processing": "Extracting...",
+    "success": "Pages Extracted Successfully!",
+    "downloadAction": "Download Extracted PDF",
+    "more": "Split another file",
+    "alertSelectOne": "Please select a PDF file first.",
+    "alertError": "An error occurred while splitting the PDF."
+  },
+  "rotate": {
+    "selectPrompt": "Select PDF file to rotate",
+    "angle": "Select Rotation Angle",
+    "angle90": "Right 90°",
+    "angle180": "Right 180°",
+    "angle270": "Right 270°",
+    "buttonAction": "Rotate PDF",
+    "processing": "Rotating...",
+    "success": "PDF Rotated Successfully!",
+    "downloadAction": "Download Rotated PDF",
+    "more": "Rotate another file",
+    "alertSelectOne": "Please select a PDF file first.",
+    "alertError": "An error occurred while rotating the PDF."
+  },
+  "watermark": {
+    "selectPrompt": "Select PDF file to watermark",
+    "settings": "Watermark Settings",
+    "text": "Watermark Text",
+    "textPlaceholder": "CONFIDENTIAL",
+    "buttonAction": "Add Watermark",
+    "processing": "Adding watermark...",
+    "success": "Watermark Added Successfully!",
+    "downloadAction": "Download PDF",
+    "more": "Watermark another file",
+    "alertSelectOne": "Please select a PDF file first.",
+    "alertError": "An error occurred while adding the watermark."
+  },
+  "edit": {
+    "selectPrompt": "Select PDF file to edit",
+    "pages": "Pages",
+    "addBlank": "Add Blank Page",
+    "buttonAction": "Save Changes",
+    "processing": "Saving...",
+    "success": "PDF Edited Successfully!",
+    "downloadAction": "Download PDF",
+    "more": "Edit another file",
+    "alertSelectOne": "Please select a PDF file first.",
+    "alertError": "An error occurred while loading the PDF."
+  },
+  "ocr": {
+    "selectPrompt": "Select PDF or Image file",
+    "buttonAction": "Extract Text",
+    "processing": "Extracting text...",
+    "success": "Text Extracted Successfully!",
+    "downloadAction": "Download Text File",
+    "more": "OCR another file",
+    "copy": "Copy Text",
+    "copied": "Copied!",
+    "placeholder": "Extracted text will appear here...",
+    "alertSelectOne": "Please select a file first.",
+    "alertError": "An error occurred during OCR extraction."
+  },
+  "convert": {
+    "selectPrompt": "Select JPG or PNG images",
+    "selectedFiles": "Selected Files",
+    "buttonAction": "Convert to PDF",
+    "processing": "Converting...",
+    "success": "Images Converted Successfully!",
+    "downloadAction": "Download PDF",
+    "more": "Convert more images",
+    "alertSelectOne": "Please select at least 1 image file.",
+    "alertError": "An error occurred during conversion."
+  }
+}
