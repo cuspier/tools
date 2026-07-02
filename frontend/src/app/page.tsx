@@ -2,63 +2,69 @@
 
 import Link from 'next/link';
 import { FileUp, Scissors, FilePlus2, RefreshCw, Type, Image as ImageIcon, FileText } from 'lucide-react';
-import { Header } from '../components/Header';
-import { useTranslation } from '../hooks/useTranslation';
+import { Header } from '@/components/Header';
+import { useTranslation } from '@/hooks/useTranslation';
+
+const toolsConfig = [
+  {
+    titleKey: 'tools.merge.title',
+    descriptionKey: 'tools.merge.description',
+    icon: FilePlus2,
+    href: '/merge',
+    color: 'bg-blue-500',
+  },
+  {
+    titleKey: 'tools.split.title',
+    descriptionKey: 'tools.split.description',
+    icon: Scissors,
+    href: '/split',
+    color: 'bg-green-500',
+  },
+  {
+    titleKey: 'tools.rotate.title',
+    descriptionKey: 'tools.rotate.description',
+    icon: RefreshCw,
+    href: '/rotate',
+    color: 'bg-yellow-500',
+  },
+  {
+    titleKey: 'tools.watermark.title',
+    descriptionKey: 'tools.watermark.description',
+    icon: Type,
+    href: '/watermark',
+    color: 'bg-purple-500',
+  },
+  {
+    titleKey: 'tools.edit.title',
+    descriptionKey: 'tools.edit.description',
+    icon: FileUp,
+    href: '/edit',
+    color: 'bg-red-500',
+  },
+  {
+    titleKey: 'tools.ocr.title',
+    descriptionKey: 'tools.ocr.description',
+    icon: ImageIcon,
+    href: '/ocr',
+    color: 'bg-indigo-500',
+  },
+  {
+    titleKey: 'tools.convert.title',
+    descriptionKey: 'tools.convert.description',
+    icon: FileText,
+    href: '/convert',
+    color: 'bg-orange-500',
+  }
+];
 
 export default function Home() {
   const { t } = useTranslation();
 
-  const tools = [
-    {
-      title: t('tools.merge.title'),
-      description: t('tools.merge.description'),
-      icon: FilePlus2,
-      href: '/merge',
-      color: 'bg-blue-500',
-    },
-    {
-      title: t('tools.split.title'),
-      description: t('tools.split.description'),
-      icon: Scissors,
-      href: '/split',
-      color: 'bg-green-500',
-    },
-    {
-      title: t('tools.rotate.title'),
-      description: t('tools.rotate.description'),
-      icon: RefreshCw,
-      href: '/rotate',
-      color: 'bg-yellow-500',
-    },
-    {
-      title: t('tools.watermark.title'),
-      description: t('tools.watermark.description'),
-      icon: Type,
-      href: '/watermark',
-      color: 'bg-purple-500',
-    },
-    {
-      title: t('tools.edit.title'),
-      description: t('tools.edit.description'),
-      icon: FileUp,
-      href: '/edit',
-      color: 'bg-red-500',
-    },
-    {
-      title: t('tools.ocr.title'),
-      description: t('tools.ocr.description'),
-      icon: ImageIcon,
-      href: '/ocr',
-      color: 'bg-indigo-500',
-    },
-    {
-      title: t('tools.convert.title'),
-      description: t('tools.convert.description'),
-      icon: FileText,
-      href: '/convert',
-      color: 'bg-orange-500',
-    }
-  ];
+  const tools = toolsConfig.map(tool => ({
+    ...tool,
+    title: t(tool.titleKey),
+    description: t(tool.descriptionKey),
+  }));
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-blue-200">
@@ -78,7 +84,7 @@ export default function Home() {
           {tools.map((tool) => (
             <Link key={tool.href} href={tool.href} className="group flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-100 hover:-translate-y-1 transition-all duration-300">
               <div className={`p-4 rounded-full text-white mb-6 ${tool.color} group-hover:scale-110 transition-transform duration-300`}>
-                <tool.icon className="w-8 h-8" />
+                <tool.icon className="w-8 h-8" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900">{tool.title}</h3>
               <p className="text-gray-500 text-sm leading-relaxed">{tool.description}</p>
