@@ -64,7 +64,9 @@
     "downloadAction": "Download Extracted PDF",
     "more": "Split another file",
     "alertSelectOne": "Please select a PDF file first.",
-    "alertError": "An error occurred while splitting the PDF."
+    "alertError": "An error occurred while splitting the PDF.",
+    "invalidRange": "Invalid page range.",
+    "pages": "Pages"
   },
   "rotate": {
     "selectPrompt": "Select PDF file to rotate",

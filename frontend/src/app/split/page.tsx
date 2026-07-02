@@ -78,7 +78,7 @@ export default function SplitPDF() {
     const end = parseInt(toPage, 10);
 
     if (isNaN(start) || isNaN(end) || start < 1 || end < start || end > totalPages) {
-      return alert("Invalid page range.");
+      return alert(t('split.invalidRange'));
     }
 
     setIsSplitting(true);
@@ -135,7 +135,7 @@ export default function SplitPDF() {
                   <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
                     <span className="font-semibold text-gray-700 truncate mr-4">{file.name}</span>
                     <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                      {totalPages} Pages
+                      {totalPages} {t('split.pages')}
                     </span>
                   </div>
 
