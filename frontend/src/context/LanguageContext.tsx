@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import enTranslations from '../locales/en.json';
 import koTranslations from '../locales/ko.json';
 
@@ -21,7 +21,6 @@ const translations = {
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [locale, setLocaleState] = useState<Locale>('en');
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const storedLocale = localStorage.getItem('localpdf_locale') as Locale;
@@ -33,43 +32,48 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       targetLocale = browserLang.toLowerCase().startsWith('ko') ? 'ko' : 'en';
     }
     
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLocaleState(targetLocale);
-    setIsMounted(true);
+    // Defer state update to avoid calling setState synchronously within effect body
+    setTimeout(() => {
+      setLocaleState(targetLocale);
+    }, 0);
   }, []);
 
-  const setLocale = (newLocale: Locale) => {
+  const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
     localStorage.setItem('localpdf_locale', newLocale);
-  };
+  }, []);
 
-  const t = (key: string): string => {
+  const t = useCallback((key: string): string => {
     const keys = key.split('.');
-    let result: unknown = translations[locale];
-
-    for (const k of keys) {
-      if (result && typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, k)) {
-        result = (result as Record<string, unknown>)[k];
-      } else {
-        // Fallback to English
-        let fallbackResult: unknown = translations['en'];
-        for (const fk of keys) {
-          if (fallbackResult && typeof fallbackResult === 'object' && Object.prototype.hasOwnProperty.call(fallbackResult, fk)) {
-            fallbackResult = (fallbackResult as Record<string, unknown>)[fk];
-          } else {
-            return key;
-          }
+    
+    const resolve = (obj: unknown): string | null => {
+      let current = obj;
+      for (const k of keys) {
+        if (current && typeof current === 'object' && Object.prototype.hasOwnProperty.call(current, k)) {
+          current = (current as Record<string, unknown>)[k];
+        } else {
+          return null;
         }
-        return typeof fallbackResult === 'string' ? fallbackResult : key;
       }
+      return typeof current === 'string' ? current : null;
+    };
+
+    const value = resolve(translations[locale]);
+    if (value !== null) return value;
+
+    if (locale !== 'en') {
+      const fallbackValue = resolve(translations['en']);
+      if (fallbackValue !== null) return fallbackValue;
     }
 
-    return typeof result === 'string' ? result : key;
-  };
+    return key;
+  }, [locale]);
+
+  const value = useMemo(() => ({ locale, setLocale, t }), [locale, setLocale, t]);
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>
-      {isMounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
+    <LanguageContext.Provider value={value}>
+      {children}
     </LanguageContext.Provider>
   );
 };
