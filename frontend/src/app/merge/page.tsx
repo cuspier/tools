@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { FileUp, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { Header } from '@/components/Header';
@@ -12,6 +12,22 @@ export default function MergePDF() {
   const [isMerging, setIsMerging] = useState(false);
   const [mergedPdfUrl, setMergedPdfUrl] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (mergedPdfUrl) {
+        URL.revokeObjectURL(mergedPdfUrl);
+      }
+    };
+  }, [mergedPdfUrl]);
+
+  const handleReset = () => {
+    if (mergedPdfUrl) {
+      URL.revokeObjectURL(mergedPdfUrl);
+    }
+    setMergedPdfUrl(null);
+    setFiles([]);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files).filter(file => file.type === 'application/pdf');
@@ -20,17 +36,19 @@ export default function MergePDF() {
   };
 
   const moveFile = (index: number, direction: 'up' | 'down') => {
-    const newFiles = [...files];
-    if (direction === 'up' && index > 0) {
-      [newFiles[index - 1], newFiles[index]] = [newFiles[index], newFiles[index - 1]];
-    } else if (direction === 'down' && index < newFiles.length - 1) {
-      [newFiles[index + 1], newFiles[index]] = [newFiles[index], newFiles[index + 1]];
-    }
-    setFiles(newFiles);
+    setFiles(prev => {
+      const newFiles = [...prev];
+      if (direction === 'up' && index > 0) {
+        [newFiles[index - 1], newFiles[index]] = [newFiles[index], newFiles[index - 1]];
+      } else if (direction === 'down' && index < newFiles.length - 1) {
+        [newFiles[index + 1], newFiles[index]] = [newFiles[index], newFiles[index + 1]];
+      }
+      return newFiles;
+    });
   };
 
   const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index));
+    setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   const mergePDFs = async () => {
@@ -74,7 +92,7 @@ export default function MergePDF() {
                 <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition shadow-lg shadow-blue-200">
                   <FileUp className="w-5 h-5" />
                   {t('common.selectFiles')}
-                  <input type="file" multiple accept="application/pdf" className="hidden" onChange={handleFileChange} />
+                  <input type="file" multiple accept="application/pdf" className="sr-only" onChange={handleFileChange} />
                 </label>
               </div>
 
@@ -126,7 +144,7 @@ export default function MergePDF() {
                 {t('merge.downloadAction')}
               </a>
               <div className="mt-8">
-                <button onClick={() => { setMergedPdfUrl(null); setFiles([]); }} className="text-gray-500 hover:text-blue-600 font-medium">
+                <button onClick={handleReset} className="text-gray-500 hover:text-blue-600 font-medium">
                   {t('merge.more')}
                 </button>
               </div>
