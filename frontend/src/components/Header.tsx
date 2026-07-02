@@ -42,9 +42,14 @@ export const Header: React.FC<HeaderProps> = ({ titleKey }) => {
           </div>
         )}
 
-        <div className="flex items-center bg-gray-100 rounded-lg p-0.5 text-xs font-semibold border border-gray-200 shadow-inner">
+        <div
+          role="group"
+          aria-label="Language selector"
+          className="flex items-center bg-gray-100 rounded-lg p-0.5 text-xs font-semibold border border-gray-200 shadow-inner"
+        >
           <button
             onClick={() => setLocale('en')}
+            aria-pressed={locale === 'en'}
             className={`px-3 py-1.5 rounded-md transition-all duration-200 cursor-pointer ${
               locale === 'en'
                 ? 'bg-white text-blue-600 shadow-sm font-bold'
@@ -55,6 +60,7 @@ export const Header: React.FC<HeaderProps> = ({ titleKey }) => {
           </button>
           <button
             onClick={() => setLocale('ko')}
+            aria-pressed={locale === 'ko'}
             className={`px-3 py-1.5 rounded-md transition-all duration-200 cursor-pointer ${
               locale === 'ko'
                 ? 'bg-white text-blue-600 shadow-sm font-bold'
