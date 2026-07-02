@@ -19,50 +19,58 @@ const translations = {
   ko: koTranslations,
 };
 
+const resolveKeyPath = (obj: unknown, keys: string[]): string | null => {
+  let current: unknown = obj;
+  for (const k of keys) {
+    if (current && typeof current === 'object' && Object.prototype.hasOwnProperty.call(current, k)) {
+      current = (current as Record<string, unknown>)[k];
+    } else {
+      return null;
+    }
+  }
+  return typeof current === 'string' ? current : null;
+};
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [locale, setLocaleState] = useState<Locale>('en');
 
   useEffect(() => {
-    const storedLocale = localStorage.getItem('localpdf_locale') as Locale;
+    let storedLocale: Locale | null = null;
+    try {
+      storedLocale = localStorage.getItem('localpdf_locale') as Locale;
+    } catch (e) {
+      console.warn('Failed to access localStorage:', e);
+    }
+
     let targetLocale: Locale = 'en';
     if (storedLocale && (storedLocale === 'en' || storedLocale === 'ko')) {
       targetLocale = storedLocale;
     } else {
-      const browserLang = navigator.language || '';
+      const browserLang = typeof navigator !== 'undefined' ? navigator.language || '' : '';
       targetLocale = browserLang.toLowerCase().startsWith('ko') ? 'ko' : 'en';
     }
-    
-    // Defer state update to avoid calling setState synchronously within effect body
-    setTimeout(() => {
-      setLocaleState(targetLocale);
-    }, 0);
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLocaleState(targetLocale);
   }, []);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
-    localStorage.setItem('localpdf_locale', newLocale);
+    try {
+      localStorage.setItem('localpdf_locale', newLocale);
+    } catch (e) {
+      console.warn('Failed to save to localStorage:', e);
+    }
   }, []);
 
   const t = useCallback((key: string): string => {
     const keys = key.split('.');
     
-    const resolve = (obj: unknown): string | null => {
-      let current = obj;
-      for (const k of keys) {
-        if (current && typeof current === 'object' && Object.prototype.hasOwnProperty.call(current, k)) {
-          current = (current as Record<string, unknown>)[k];
-        } else {
-          return null;
-        }
-      }
-      return typeof current === 'string' ? current : null;
-    };
-
-    const value = resolve(translations[locale]);
+    const value = resolveKeyPath(translations[locale], keys);
     if (value !== null) return value;
 
     if (locale !== 'en') {
-      const fallbackValue = resolve(translations['en']);
+      const fallbackValue = resolveKeyPath(translations['en'], keys);
       if (fallbackValue !== null) return fallbackValue;
     }
 
