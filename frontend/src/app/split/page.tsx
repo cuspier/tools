@@ -29,10 +29,7 @@ export default function SplitPDF() {
       if (selectedFile.type !== 'application/pdf') return;
 
       setFile(selectedFile);
-      setSplitPdfUrl(prevUrl => {
-        if (prevUrl) URL.revokeObjectURL(prevUrl);
-        return null;
-      });
+      setSplitPdfUrl(null);
       
       try {
         const fileBuffer = await selectedFile.arrayBuffer();
@@ -91,8 +88,8 @@ export default function SplitPDF() {
       const copiedPages = await subPdf.copyPages(pdf, pageIndices);
       copiedPages.forEach((page) => subPdf.addPage(page));
 
-      const subPdfBytes = await subPdf.save();
-      const blob = new Blob([subPdfBytes as unknown as BlobPart], { type: 'application/pdf' });
+      const subPdfBytes = await subPdf.save() as Uint8Array<ArrayBuffer>;
+      const blob = new Blob([subPdfBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setSplitPdfUrl(url);
     } catch (error) {
@@ -104,10 +101,7 @@ export default function SplitPDF() {
   };
 
   const handleReset = () => {
-    setSplitPdfUrl(prevUrl => {
-      if (prevUrl) URL.revokeObjectURL(prevUrl);
-      return null;
-    });
+    setSplitPdfUrl(null);
     setFile(null);
   };
 
@@ -143,8 +137,9 @@ export default function SplitPDF() {
                     <h4 className="font-medium text-sm text-gray-500 uppercase tracking-wider">{t('split.pageRange')}</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-600 mb-1">{t('split.from')}</label>
+                        <label htmlFor="from-page" className="block text-sm font-medium text-gray-600 mb-1">{t('split.from')}</label>
                         <input 
+                          id="from-page"
                           type="number" 
                           min="1" 
                           max={totalPages} 
@@ -155,8 +150,9 @@ export default function SplitPDF() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-600 mb-1">{t('split.to')}</label>
+                        <label htmlFor="to-page" className="block text-sm font-medium text-gray-600 mb-1">{t('split.to')}</label>
                         <input 
+                          id="to-page"
                           type="number" 
                           min="1" 
                           max={totalPages} 
