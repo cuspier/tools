@@ -8,9 +8,10 @@ import { Scissors, ArrowLeft, FileUp, Download } from 'lucide-react';
 export default function SplitPDF() {
   const [file, setFile] = useState<File | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [startPage, setStartPage] = useState<number>(1);
-  const [endPage, setEndPage] = useState<number>(1);
+  const [startPage, setStartPage] = useState<number | ''>(1);
+  const [endPage, setEndPage] = useState<number | ''>(1);
   const [isSplitting, setIsSplitting] = useState(false);
+  const [isLoadingPdf, setIsLoadingPdf] = useState(false);
   const [splitPdfUrl, setSplitPdfUrl] = useState<string | null>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +19,7 @@ export default function SplitPDF() {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
       setSplitPdfUrl(null);
+      setIsLoadingPdf(true);
       
       // Load PDF to get page count
       try {
@@ -31,13 +33,17 @@ export default function SplitPDF() {
         console.error("Failed to read PDF:", error);
         alert("Could not read this PDF. It might be corrupted or protected.");
         setFile(null);
+      } finally {
+        setIsLoadingPdf(false);
       }
     }
   };
 
   const splitPDF = async () => {
     if (!file) return;
-    if (startPage < 1 || endPage > totalPages || startPage > endPage) {
+    const start = Number(startPage);
+    const end = Number(endPage);
+    if (!start || !end || start < 1 || end > totalPages || start > end) {
       return alert("Invalid page range.");
     }
     
@@ -49,7 +55,7 @@ export default function SplitPDF() {
 
       // pdf-lib uses 0-based indices
       const pageIndices = [];
-      for (let i = startPage - 1; i < endPage; i++) {
+      for (let i = start - 1; i < end; i++) {
         pageIndices.push(i);
       }
 
@@ -94,6 +100,11 @@ export default function SplitPDF() {
                 <input type="file" accept="application/pdf" className="hidden" onChange={handleFileChange} />
               </label>
             </div>
+          ) : isLoadingPdf ? (
+            <div className="max-w-md mx-auto text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+              <p className="text-gray-500">Loading PDF and counting pages...</p>
+            </div>
           ) : !splitPdfUrl ? (
             <div className="max-w-md mx-auto text-left">
               <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8">
@@ -109,9 +120,25 @@ export default function SplitPDF() {
                     <input 
                       type="number" 
                       min={1} 
-                      max={endPage} 
+                      max={endPage || totalPages} 
                       value={startPage} 
-                      onChange={e => setStartPage(Number(e.target.value))}
+                      onChange={e => {
+                        const val = e.target.value;
+                        if (val === '') setStartPage('');
+                        else {
+                          const num = parseInt(val, 10);
+                          if (!isNaN(num)) setStartPage(num);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (startPage === '' || startPage < 1) {
+                          setStartPage(1);
+                        } else if (endPage !== '' && startPage > endPage) {
+                          setStartPage(endPage);
+                        } else if (startPage > totalPages) {
+                          setStartPage(totalPages);
+                        }
+                      }}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     />
                   </div>
@@ -119,10 +146,26 @@ export default function SplitPDF() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">To Page</label>
                     <input 
                       type="number" 
-                      min={startPage} 
+                      min={startPage || 1} 
                       max={totalPages} 
                       value={endPage} 
-                      onChange={e => setEndPage(Number(e.target.value))}
+                      onChange={e => {
+                        const val = e.target.value;
+                        if (val === '') setEndPage('');
+                        else {
+                          const num = parseInt(val, 10);
+                          if (!isNaN(num)) setEndPage(num);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (endPage === '' || endPage > totalPages) {
+                          setEndPage(totalPages);
+                        } else if (startPage !== '' && endPage < startPage) {
+                          setEndPage(startPage);
+                        } else if (endPage < 1) {
+                          setEndPage(1);
+                        }
+                      }}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     />
                   </div>
