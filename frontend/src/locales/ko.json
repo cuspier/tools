@@ -141,6 +141,7 @@
   },
   "convert": {
     "selectPrompt": "JPG 또는 PNG 이미지를 선택하세요",
+    "selectFiles": "파일 선택",
     "selectedFiles": "선택된 파일",
     "buttonAction": "PDF로 변환하기",
     "processing": "변환 중...",

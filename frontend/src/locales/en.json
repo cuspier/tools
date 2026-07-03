@@ -141,6 +141,7 @@
   },
   "convert": {
     "selectPrompt": "Select JPG or PNG images",
+    "selectFiles": "Select Files",
     "selectedFiles": "Selected Files",
     "buttonAction": "Convert to PDF",
     "processing": "Converting...",
