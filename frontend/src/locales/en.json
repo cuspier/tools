@@ -105,7 +105,21 @@
     "downloadAction": "Download PDF",
     "more": "Edit another file",
     "alertSelectOne": "Please select a PDF file first.",
-    "alertError": "An error occurred while loading the PDF."
+    "alertError": "An error occurred while loading the PDF.",
+    "title": "Edit PDF Content",
+    "description": "Add, remove, or rearrange pages, and add text annotations directly to your PDF.",
+    "instructions": "Click anywhere on the document to add text. Drag text to move it.",
+    "cancel": "Cancel",
+    "actions": "Actions",
+    "saveSuccess": "Document saved successfully!",
+    "deletePage": "Delete Page",
+    "deleteAnnotation": "Delete Annotation",
+    "alertMinPages": "A PDF must have at least one page.",
+    "alertLoadError": "Could not read this PDF. It might be corrupted or protected.",
+    "alertSaveError": "An error occurred while saving the edited PDF.",
+    "blank": "Blank",
+    "page": "Page",
+    "newText": "New Text"
   },
   "ocr": {
     "selectPrompt": "Select PDF or Image file",

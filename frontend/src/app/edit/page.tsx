@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useRef, useEffect } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import { ArrowLeft, FileUp, Download, Plus, Save, Trash2, Layers } from 'lucide-react';
+import { FileUp, Plus, Save, Trash2, Layers } from 'lucide-react';
+import { Header } from '@/components/Header';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Annotation = {
   id: string;
@@ -20,7 +21,12 @@ type PageItem =
 
 type PageAnnotations = Record<string, Annotation[]>;
 
+const generateId = (prefix: string): string => {
+  return `${prefix}-${Date.now()}-${Math.random()}`;
+};
+
 export default function EditPDF() {
+  const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [pdfBytes, setPdfBytes] = useState<ArrayBuffer | null>(null);
   const [editedPdfUrl, setEditedPdfUrl] = useState<string | null>(null);
@@ -37,9 +43,31 @@ export default function EditPDF() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const handleReset = () => {
+    if (editedPdfUrl) {
+      URL.revokeObjectURL(editedPdfUrl);
+    }
+    setFile(null);
+    setEditedPdfUrl(null);
+    setPdfBytes(null);
+    setAnnotations({});
+    setPages([]);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (editedPdfUrl) {
+        URL.revokeObjectURL(editedPdfUrl);
+      }
+    };
+  }, [editedPdfUrl]);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
+      if (editedPdfUrl) {
+        URL.revokeObjectURL(editedPdfUrl);
+      }
       setFile(selectedFile);
       setEditedPdfUrl(null);
       setAnnotations({});
@@ -55,7 +83,7 @@ export default function EditPDF() {
         const initialPages: PageItem[] = Array.from({ length: count }, (_, i) => ({
           type: 'original',
           originalPageIndex: i,
-          id: `original-${i}-${Date.now()}-${Math.random()}`
+          id: generateId(`original-${i}`)
         }));
         
         setPages(initialPages);
@@ -63,7 +91,7 @@ export default function EditPDF() {
         await renderPdfPage(initialPages[0], arrayBuffer);
       } catch (error) {
         console.error("Failed to read PDF:", error);
-        alert("Could not read this PDF. It might be corrupted or protected.");
+        alert(t('edit.alertLoadError'));
         setFile(null);
       }
     }
@@ -137,7 +165,7 @@ export default function EditPDF() {
       ...annotations,
       [pageId]: [
         ...activeAnnotations,
-        { id: Date.now().toString(), text: 'New Text', x, y }
+        { id: generateId('ann'), text: t('edit.newText'), x, y }
       ]
     });
   };
@@ -163,7 +191,7 @@ export default function EditPDF() {
   };
 
   const addBlankPage = () => {
-    const newPageId = `blank-${Date.now()}-${Math.random()}`;
+    const newPageId = generateId('blank');
     const updatedPages = [
       ...pages,
       { type: 'blank' as const, id: newPageId }
@@ -178,7 +206,7 @@ export default function EditPDF() {
   const deletePage = (index: number, e: React.MouseEvent) => {
     e.stopPropagation();
     if (pages.length <= 1) {
-      alert("A PDF must have at least one page.");
+      alert(t('edit.alertMinPages'));
       return;
     }
     const updatedPages = pages.filter((_, i) => i !== index);
@@ -298,7 +326,7 @@ export default function EditPDF() {
       setEditedPdfUrl(url);
     } catch (error) {
       console.error("Error saving PDF:", error);
-      alert("An error occurred while saving the edited PDF.");
+      alert(t('edit.alertSaveError'));
     } finally {
       setIsProcessing(false);
     }
@@ -309,26 +337,17 @@ export default function EditPDF() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="text-gray-500 hover:text-blue-600 transition">
-              <ArrowLeft className="w-6 h-6" />
-            </Link>
-            <span className="text-xl font-bold">Edit PDF</span>
-          </div>
-        </div>
-      </header>
+      <Header titleKey="tools.edit.title" />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         {!file ? (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center max-w-2xl mx-auto mt-12">
-            <h2 className="text-3xl font-bold mb-4">Edit PDF Content</h2>
-            <p className="text-gray-500 mb-8">Add, remove, or rearrange pages, and add text annotations directly to your PDF.</p>
-            <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-semibold transition shadow-lg shadow-emerald-200">
+            <h2 className="text-3xl font-bold mb-4">{t('edit.title')}</h2>
+            <p className="text-gray-500 mb-8">{t('edit.description')}</p>
+            <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-semibold transition shadow-lg shadow-emerald-200 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500 outline-none">
               <FileUp className="w-5 h-5" />
-              Select PDF File
-              <input type="file" accept="application/pdf" className="hidden" onChange={handleFileChange} />
+              {t('common.selectFile')}
+              <input type="file" accept="application/pdf" className="sr-only" onChange={handleFileChange} />
             </label>
           </div>
         ) : (
@@ -337,7 +356,7 @@ export default function EditPDF() {
             <div className="w-full lg:w-60 shrink-0 bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col gap-4 self-stretch min-h-[500px]">
               <div className="flex items-center gap-2 pb-3 border-b border-gray-100">
                 <Layers className="w-5 h-5 text-emerald-600" />
-                <span className="font-bold text-gray-700">Pages ({pages.length})</span>
+                <span className="font-bold text-gray-700">{t('edit.pages')} ({pages.length})</span>
               </div>
               
               <div className="flex-1 overflow-y-auto max-h-[600px] pr-1 flex flex-col gap-3">
@@ -353,15 +372,15 @@ export default function EditPDF() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-12 bg-gray-100 border border-gray-200 rounded flex items-center justify-center text-xs font-semibold text-gray-500 shadow-sm">
-                        {pageItem.type === 'original' ? 'PDF' : 'Blank'}
+                        {pageItem.type === 'original' ? 'PDF' : t('edit.blank')}
                       </div>
-                      <span className="font-medium text-sm text-gray-700">Page {index + 1}</span>
+                      <span className="font-medium text-sm text-gray-700">{t('edit.page')} {index + 1}</span>
                     </div>
                     
                     <button
                       onClick={(e) => deletePage(index, e)}
                       className="delete-page-btn text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition lg:opacity-0 group-hover:opacity-100"
-                      title="Delete Page"
+                      title={t('edit.deletePage')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -374,7 +393,7 @@ export default function EditPDF() {
                 className="w-full py-2.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 text-gray-700 font-semibold rounded-lg transition flex items-center justify-center gap-2 border border-gray-200 border-dashed hover:border-emerald-300"
               >
                 <Plus className="w-4 h-4" />
-                Add Blank Page
+                {t('edit.addBlank')}
               </button>
             </div>
 
@@ -382,7 +401,7 @@ export default function EditPDF() {
             <div className="flex-1 min-w-0">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 overflow-auto">
                 <p className="text-sm text-gray-500 mb-4 font-medium flex items-center gap-2">
-                  <Plus className="w-4 h-4" /> Click anywhere on the document to add text. Drag text to move it.
+                  <Plus className="w-4 h-4" /> {t('edit.instructions')}
                 </p>
                 <div 
                   ref={containerRef}
@@ -420,7 +439,7 @@ export default function EditPDF() {
                       <button
                         onClick={() => deleteAnnotation(ann.id)}
                         className="delete-ann-btn ml-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow-sm shrink-0"
-                        title="Delete Annotation"
+                        title={t('edit.deleteAnnotation')}
                       >
                         <Plus className="w-3.5 h-3.5 rotate-45" />
                       </button>
@@ -433,7 +452,7 @@ export default function EditPDF() {
             {/* Actions panel */}
             <div className="w-full lg:w-80 shrink-0">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 sticky top-24">
-                <h3 className="font-bold text-lg mb-4">Actions</h3>
+                <h3 className="font-bold text-lg mb-4">{t('edit.actions')}</h3>
                 
                 {!editedPdfUrl ? (
                   <div className="space-y-4">
@@ -443,32 +462,32 @@ export default function EditPDF() {
                       className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       <Save className="w-5 h-5" />
-                      {isProcessing ? 'Saving...' : 'Save Changes'}
+                      {isProcessing ? t('edit.processing') : t('edit.buttonAction')}
                     </button>
                     <button 
-                      onClick={() => { setFile(null); setPdfBytes(null); setAnnotations({}); setPages([]); }} 
+                      onClick={handleReset} 
                       className="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition"
                     >
-                      Cancel
+                      {t('edit.cancel')}
                     </button>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     <div className="p-4 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-medium mb-4">
-                      Document saved successfully!
+                      {t('edit.saveSuccess')}
                     </div>
                     <a 
                       href={editedPdfUrl} 
                       download={`edited_${file.name}`}
                       className="block text-center w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition shadow-sm"
                     >
-                      Download PDF
+                      {t('edit.downloadAction')}
                     </a>
                     <button 
-                      onClick={() => { setFile(null); setEditedPdfUrl(null); setPdfBytes(null); setAnnotations({}); setPages([]); }} 
+                      onClick={handleReset} 
                       className="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition"
                     >
-                      Edit another file
+                      {t('edit.more')}
                     </button>
                   </div>
                 )}
