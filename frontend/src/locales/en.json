@@ -39,8 +39,11 @@
     }
   },
   "home": {
-    "heroTitle": "Every tool you need to work with PDFs in one place",
-    "heroSubtitle": "100% Free, Secure, and Local. Your files never leave your browser. Edit, merge, split, and convert your PDFs with zero server uploads."
+    "heroTitle": "Local PDF Tools running 100% securely in your browser",
+    "heroSubtitle": "Fast processing with absolute privacy, zero server uploads",
+    "badgeLocal": "🔒 100% Local Processing",
+    "badgeSecure": "⚡ Zero Server Uploads",
+    "badgeFree": "✨ Free & Unlimited"
   },
   "merge": {
     "selectPrompt": "Select PDF files to merge",
