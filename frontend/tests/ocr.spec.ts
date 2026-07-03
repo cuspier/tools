@@ -18,7 +18,7 @@ test.describe('OCR Tool End-to-End Tests', () => {
 
     // Wait for the file input to be available
     const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('label:has-text("Select Image File")').click();
+    await page.locator('label:has-text("Select PDF File")').click();
     const fileChooser = await fileChooserPromise;
     
     // Upload the screenshot
@@ -38,11 +38,11 @@ test.describe('OCR Tool End-to-End Tests', () => {
 
     // Download the text
     const downloadPromise = page.waitForEvent('download');
-    await page.click('button:has-text("Download .txt")');
+    await page.click('button:has-text("Download Text File")');
     const download = await downloadPromise;
 
     // Verify download filename
-    expect(download.suggestedFilename()).toBe('extracted_screenshot.png.txt');
+    expect(download.suggestedFilename()).toBe('extracted_screenshot.txt');
   });
 
 });
