@@ -56,8 +56,8 @@ export default function AddWatermark() {
         });
       });
 
-      const watermarkedPdfBytes = await pdf.save();
-      const blob = new Blob([watermarkedPdfBytes as unknown as BlobPart], { type: 'application/pdf' });
+      const watermarkedPdfBytes = await pdf.save() as Uint8Array<ArrayBuffer>;
+      const blob = new Blob([watermarkedPdfBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setWatermarkedPdfUrl(url);
     } catch (error) {
@@ -69,9 +69,6 @@ export default function AddWatermark() {
   };
 
   const handleReset = () => {
-    if (watermarkedPdfUrl) {
-      URL.revokeObjectURL(watermarkedPdfUrl);
-    }
     setWatermarkedPdfUrl(null);
     setFile(null);
     setWatermarkText('');
@@ -89,7 +86,7 @@ export default function AddWatermark() {
           {!watermarkedPdfUrl ? (
             <>
               <div className="mb-8">
-                <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition shadow-lg shadow-blue-200">
+                <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition shadow-lg shadow-blue-200 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500 outline-none">
                   <Type className="w-5 h-5" />
                   {t('common.selectFile')}
                   <input type="file" accept="application/pdf" className="sr-only" onChange={handleFileChange} />
