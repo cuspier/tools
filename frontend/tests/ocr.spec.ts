@@ -3,13 +3,22 @@ import path from 'path';
 import fs from 'fs';
 
 test.describe('OCR Tool End-to-End Tests', () => {
+  const workerIndex = process.env.TEST_WORKER_INDEX || '0';
+  const screenshotFileName = `screenshot-${workerIndex}.png`;
+  const fixturePath = path.join(__dirname, `fixtures/${screenshotFileName}`);
 
   test.beforeAll(async ({ browser }) => {
     // Generate a test image with text by taking a screenshot
     const page = await browser.newPage();
     await page.setContent('<div style="font-size: 50px; font-family: sans-serif; padding: 50px; background: white; color: black;">TEST OCR TEXT</div>');
-    await page.screenshot({ path: path.join(__dirname, 'fixtures/screenshot.png') });
+    await page.screenshot({ path: fixturePath });
     await page.close();
+  });
+
+  test.afterAll(async () => {
+    if (fs.existsSync(fixturePath)) {
+      fs.unlinkSync(fixturePath);
+    }
   });
 
   test('Should extract text from uploaded image', async ({ page }) => {
@@ -22,12 +31,10 @@ test.describe('OCR Tool End-to-End Tests', () => {
     const fileChooser = await fileChooserPromise;
     
     // Upload the screenshot
-    await fileChooser.setFiles([
-      path.join(__dirname, 'fixtures/screenshot.png')
-    ]);
+    await fileChooser.setFiles([fixturePath]);
 
     // Verify file is loaded
-    await expect(page.locator('text=screenshot.png')).toBeVisible();
+    await expect(page.locator(`text=${screenshotFileName}`)).toBeVisible();
 
     // Click Extract button
     await page.click('button:has-text("Extract Text")');
@@ -38,11 +45,11 @@ test.describe('OCR Tool End-to-End Tests', () => {
 
     // Download the text
     const downloadPromise = page.waitForEvent('download');
-    await page.click('button:has-text("Download .txt")');
+    await page.click('button:has-text("Download Text File")');
     const download = await downloadPromise;
 
     // Verify download filename
-    expect(download.suggestedFilename()).toBe('extracted_screenshot.png.txt');
+    expect(download.suggestedFilename()).toBe(`extracted_screenshot-${workerIndex}.txt`);
   });
 
 });

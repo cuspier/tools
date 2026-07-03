@@ -1,0 +1,154 @@
+{
+  "common": {
+    "title": "LocalPDF",
+    "allTools": "모든 도구",
+    "privacyNotice": "100% 개인정보 보호 클라이언트 사이드 처리. 파일은 브라우저 외부로 전송되지 않습니다.",
+    "selectFiles": "PDF 파일 선택",
+    "selectFile": "PDF 파일 선택",
+    "download": "다운로드",
+    "back": "뒤로 가기",
+    "cancel": "취소"
+  },
+  "tools": {
+    "merge": {
+      "title": "PDF 병합",
+      "description": "여러 PDF 파일을 하나의 문서로 간편하게 병합합니다."
+    },
+    "split": {
+      "title": "PDF 분할",
+      "description": "특정 페이지 또는 전체를 개별 PDF 파일로 손쉽게 나눕니다."
+    },
+    "rotate": {
+      "title": "PDF 회전",
+      "description": "필요한 방향으로 PDF를 회전합니다. 여러 PDF를 동시에 회전할 수 있습니다."
+    },
+    "watermark": {
+      "title": "워터마크 추가",
+      "description": "텍스트나 이미지를 선택해 PDF 문서에 워터마크를 삽입합니다."
+    },
+    "edit": {
+      "title": "PDF 편집",
+      "description": "PDF 문서에 텍스트, 이미지, 도형 또는 자유 서명/그리기를 추가합니다."
+    },
+    "ocr": {
+      "title": "OCR (이미지 텍스트 추출)",
+      "description": "스캔된 PDF나 이미지에서 텍스트를 손쉽게 추출합니다."
+    },
+    "convert": {
+      "title": "이미지 PDF 변환",
+      "description": "JPG나 PNG 이미지를 브라우저 내에서 직접 PDF로 변환합니다."
+    }
+  },
+  "home": {
+    "heroTitle": "브라우저에서 100% 안전하게 실행되는 로컬 PDF 도구",
+    "heroSubtitle": "서버 전송 없이 브라우저 내에서 빠르고 완벽한 개인정보 보호",
+    "badgeLocal": "🔒 100% 로컬 처리",
+    "badgeSecure": "⚡ 서버 업로드 없음",
+    "badgeFree": "✨ 무료 & 무제한"
+  },
+  "merge": {
+    "selectPrompt": "병합할 PDF 파일을 선택하세요",
+    "selectedFiles": "선택된 파일",
+    "buttonAction": "PDF 병합하기",
+    "merging": "병합 중...",
+    "success": "PDF 병합 완료!",
+    "downloadAction": "병합된 PDF 다운로드",
+    "more": "추가 병합하기",
+    "alertSelectTwo": "병합할 PDF 파일을 2개 이상 선택해 주세요.",
+    "alertError": "PDF 병합 중 오류가 발생했습니다."
+  },
+  "split": {
+    "selectPrompt": "분할할 PDF 파일을 선택하세요",
+    "pageRange": "페이지 범위 추출",
+    "from": "시작 페이지",
+    "to": "끝 페이지",
+    "buttonAction": "페이지 추출하기",
+    "processing": "추출 중...",
+    "success": "페이지 추출 완료!",
+    "downloadAction": "추출된 PDF 다운로드",
+    "more": "다른 파일 분할하기",
+    "alertSelectOne": "먼저 PDF 파일을 선택해 주세요.",
+    "alertError": "PDF 분할 중 오류가 발생했습니다.",
+    "invalidRange": "유효하지 않은 페이지 범위입니다.",
+    "pages": "페이지"
+  },
+  "rotate": {
+    "selectPrompt": "회전할 PDF 파일을 선택하세요",
+    "angle": "회전 각도 선택",
+    "angle90": "오른쪽 90°",
+    "angle180": "오른쪽 180°",
+    "angle270": "오른쪽 270°",
+    "buttonAction": "PDF 회전하기",
+    "processing": "회전 중...",
+    "success": "PDF 회전 완료!",
+    "downloadAction": "회전된 PDF 다운로드",
+    "more": "다른 파일 회전하기",
+    "alertSelectOne": "먼저 PDF 파일을 선택해 주세요.",
+    "alertError": "PDF 회전 중 오류가 발생했습니다."
+  },
+  "watermark": {
+    "selectPrompt": "워터마크를 추가할 PDF 파일을 선택하세요",
+    "settings": "워터마크 설정",
+    "text": "워터마크 텍스트",
+    "textPlaceholder": "복사금지",
+    "buttonAction": "워터마크 추가하기",
+    "processing": "워터마크 추가 중...",
+    "success": "워터마크 추가 완료!",
+    "downloadAction": "PDF 다운로드",
+    "more": "다른 파일에 추가하기",
+    "alertSelectOne": "먼저 PDF 파일을 선택해 주세요.",
+    "alertError": "워터마크 추가 중 오류가 발생했습니다."
+  },
+  "edit": {
+    "selectPrompt": "편집할 PDF 파일을 선택하세요",
+    "pages": "페이지 목록",
+    "addBlank": "빈 페이지 추가",
+    "buttonAction": "변경사항 저장하기",
+    "processing": "저장 중...",
+    "success": "PDF 편집 완료!",
+    "downloadAction": "PDF 다운로드",
+    "more": "다른 파일 편집하기",
+    "alertSelectOne": "먼저 PDF 파일을 선택해 주세요.",
+    "alertError": "PDF 파일을 불러오는 중 오류가 발생했습니다.",
+    "title": "PDF 콘텐츠 편집",
+    "description": "페이지 추가, 삭제, 순서 변경 및 PDF에 텍스트 주석을 직접 추가합니다.",
+    "instructions": "문서의 아무 곳이나 클릭하여 텍스트를 추가하세요. 텍스트를 드래그하여 이동할 수 있습니다.",
+    "cancel": "취소",
+    "actions": "작업",
+    "saveSuccess": "문서가 성공적으로 저장되었습니다!",
+    "deletePage": "페이지 삭제",
+    "deleteAnnotation": "주석 삭제",
+    "alertMinPages": "PDF는 최소 한 페이지 이상이어야 합니다.",
+    "alertLoadError": "PDF를 읽을 수 없습니다. 파일이 손상되었거나 암호로 보호되어 있을 수 있습니다.",
+    "alertSaveError": "편집된 PDF를 저장하는 동안 오류가 발생했습니다.",
+    "blank": "빈 페이지",
+    "page": "페이지",
+    "newText": "새 텍스트"
+  },
+  "ocr": {
+    "selectPrompt": "이미지 파일 선택",
+    "selectImage": "이미지 파일 선택",
+    "buttonAction": "텍스트 추출하기",
+    "processing": "텍스트 추출 중...",
+    "success": "텍스트 추출 완료!",
+    "downloadAction": "텍스트 파일 다운로드",
+    "more": "다른 파일 추출하기",
+    "copy": "텍스트 복사",
+    "copied": "복사 완료!",
+    "placeholder": "추출된 텍스트가 여기에 표시됩니다...",
+    "alertSelectOne": "먼저 파일을 선택해 주세요.",
+    "alertError": "OCR 텍스트 추출 중 오류가 발생했습니다."
+  },
+  "convert": {
+    "selectPrompt": "JPG 또는 PNG 이미지를 선택하세요",
+    "selectFiles": "파일 선택",
+    "selectedFiles": "선택된 파일",
+    "buttonAction": "PDF로 변환하기",
+    "processing": "변환 중...",
+    "success": "이미지 변환 완료!",
+    "downloadAction": "PDF 다운로드",
+    "more": "다른 이미지 변환하기",
+    "alertSelectOne": "최소 1개 이상의 이미지 파일을 선택해 주세요.",
+    "alertError": "변환 중 오류가 발생했습니다."
+  }
+}
