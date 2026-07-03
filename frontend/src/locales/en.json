@@ -6,7 +6,8 @@
     "selectFiles": "Select PDF Files",
     "selectFile": "Select PDF File",
     "download": "Download",
-    "back": "Back"
+    "back": "Back",
+    "cancel": "Cancel"
   },
   "tools": {
     "merge": {
