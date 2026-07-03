@@ -37,6 +37,10 @@
     "convert": {
       "title": "Convert to PDF",
       "description": "Convert JPG or PNG images into a PDF document entirely in your browser."
+    },
+    "idPhoto": {
+      "title": "ID Photo Automation",
+      "description": "Remove backgrounds automatically and create photos fitting passport, half-namecard, or driver's license specifications."
     }
   },
   "home": {
@@ -44,7 +48,9 @@
     "heroSubtitle": "Fast processing with absolute privacy, zero server uploads",
     "badgeLocal": "🔒 100% Local Processing",
     "badgeSecure": "⚡ Zero Server Uploads",
-    "badgeFree": "✨ Free & Unlimited"
+    "badgeFree": "✨ Free & Unlimited",
+    "pdfTools": "PDF Tools",
+    "imageTools": "Image Tools"
   },
   "merge": {
     "selectPrompt": "Select PDF files to merge",
@@ -150,5 +156,13 @@
     "more": "Convert more images",
     "alertSelectOne": "Please select at least 1 image file.",
     "alertError": "An error occurred during conversion."
+  },
+  "brand": {
+    "name": "Barotl",
+    "tagline": "Directly in your browser, no installation required",
+    "heroTitle": "File tasks, now done right here, right now",
+    "heroDescription": "100% free, secure, local processing. Your files never leave your browser. PDF editing, merging, splitting, converting, and ID photos — with zero server uploads.",
+    "localBadge": "100% local processing — files are never sent to the server.",
+    "copyright": "© {year} Barotl. 100% browser-local processing — files are never sent to the server."
   }
 }

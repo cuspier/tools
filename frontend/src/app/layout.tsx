@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "../context/LanguageContext";
+import { brand } from "@/config/brand";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LocalPDF",
-  description: "100% Client-Side PDF Tools",
+  title: {
+    default: brand.name,
+    template: `%s | ${brand.name}`,
+  },
+  description: brand.metaDescription,
+  metadataBase: new URL(brand.url),
+  openGraph: {
+    title: brand.name,
+    description: brand.metaDescription,
+    siteName: brand.name,
+    locale: "ko_KR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >

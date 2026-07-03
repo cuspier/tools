@@ -37,14 +37,20 @@
     "convert": {
       "title": "이미지 PDF 변환",
       "description": "JPG나 PNG 이미지를 브라우저 내에서 직접 PDF로 변환합니다."
+    },
+    "idPhoto": {
+      "title": "증명사진 자동화",
+      "description": "배경 제거 후 여권·반명함·운전면허 등 규격에 맞게 증명사진을 완성하세요. 편의점 인쇄용 PDF도 지원합니다."
     }
   },
   "home": {
     "heroTitle": "브라우저에서 100% 안전하게 실행되는 로컬 PDF 도구",
     "heroSubtitle": "서버 전송 없이 브라우저 내에서 빠르고 완벽한 개인정보 보호",
     "badgeLocal": "🔒 100% 로컬 처리",
-    "badgeSecure": "⚡ 서버 업로드 없음",
-    "badgeFree": "✨ 무료 & 무제한"
+    "badgeSecure": "⚡ 서버 전송 없음",
+    "badgeFree": "✨ 완전 무료",
+    "pdfTools": "PDF 도구",
+    "imageTools": "이미지 도구"
   },
   "merge": {
     "selectPrompt": "병합할 PDF 파일을 선택하세요",
@@ -150,5 +156,13 @@
     "more": "다른 이미지 변환하기",
     "alertSelectOne": "최소 1개 이상의 이미지 파일을 선택해 주세요.",
     "alertError": "변환 중 오류가 발생했습니다."
+  },
+  "brand": {
+    "name": "바로틀",
+    "tagline": "설치 없이 브라우저에서 바로",
+    "heroTitle": "파일 작업, 이제 바로틀에서 바로",
+    "heroDescription": "100% 무료, 안전, 로컬 처리. 내 파일은 내 브라우저 안에서만. PDF 편집, 병합, 분할, 변환 그리고 증명사진까지 — 서버 업로드 없이.",
+    "localBadge": "100% 로컬 처리 — 파일이 서버로 전송되지 않습니다",
+    "copyright": "© {year} 바로틀(Barotl). 100% 브라우저 로컬 처리 — 파일이 서버로 전송되지 않습니다."
   }
 }

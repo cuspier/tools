@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({ titleKey }) => {
                 <FileUp className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                LocalPDF
+                {t('brand.name')}
               </span>
             </Link>
             <nav className="hidden md:flex gap-6 font-medium text-gray-600">
@@ -38,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ titleKey }) => {
               <Link href="/split" className="hover:text-blue-600 transition">{t('tools.split.title')}</Link>
               <Link href="/convert" className="hover:text-blue-600 transition">{t('tools.convert.title')}</Link>
               <Link href="/edit" className="hover:text-blue-600 transition">{t('tools.edit.title')}</Link>
+              <Link href="/id-photo" className="hover:text-blue-600 transition">{t('tools.idPhoto.title')}</Link>
             </nav>
           </div>
         )}

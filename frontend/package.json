@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
     "@rhwp/core": "^0.7.17",
     "framer-motion": "^12.41.0",
     "html2pdf.js": "^0.14.0",

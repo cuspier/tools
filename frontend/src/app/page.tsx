@@ -1,11 +1,12 @@
 "use client";
 
+import React from 'react';
 import Link from 'next/link';
-import { FileUp, Scissors, FilePlus2, RefreshCw, Type, Image as ImageIcon, FileText } from 'lucide-react';
+import { FileUp, Scissors, FilePlus2, RefreshCw, Type, Image as ImageIcon, FileText, Camera } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useTranslation } from '@/hooks/useTranslation';
 
-const toolsConfig = [
+const pdfToolsConfig = [
   {
     titleKey: 'tools.merge.title',
     descriptionKey: 'tools.merge.description',
@@ -54,13 +55,57 @@ const toolsConfig = [
     icon: FileText,
     href: '/convert',
     color: 'bg-orange-500',
-  }
+  },
 ];
+
+const imageToolsConfig = [
+  {
+    titleKey: 'tools.idPhoto.title',
+    descriptionKey: 'tools.idPhoto.description',
+    icon: Camera,
+    href: '/id-photo',
+    color: 'bg-rose-500',
+  },
+];
+
+interface ToolItem {
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  href: string;
+  color: string;
+}
+
+function ToolGrid({ tools }: { tools: ToolItem[] }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {tools.map((tool) => (
+        <Link
+          key={tool.href}
+          href={tool.href}
+          className="group flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-100 hover:-translate-y-1 transition-all duration-300"
+        >
+          <div className={`p-4 rounded-full text-white mb-6 ${tool.color} group-hover:scale-110 transition-transform duration-300`}>
+            <tool.icon className="w-8 h-8" aria-hidden="true" />
+          </div>
+          <h3 className="text-xl font-bold mb-3 text-gray-900">{tool.title}</h3>
+          <p className="text-gray-500 text-sm leading-relaxed">{tool.description}</p>
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 export default function Home() {
   const { t } = useTranslation();
 
-  const tools = toolsConfig.map(tool => ({
+  const pdfTools = pdfToolsConfig.map(tool => ({
+    ...tool,
+    title: t(tool.titleKey),
+    description: t(tool.descriptionKey),
+  }));
+
+  const imageTools = imageToolsConfig.map(tool => ({
     ...tool,
     title: t(tool.titleKey),
     description: t(tool.descriptionKey),
@@ -71,43 +116,36 @@ export default function Home() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="sr-only">LocalPDF - 100% Client-Side PDF Tools</h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {tools.map((tool) => (
-            <Link key={tool.href} href={tool.href} className="group flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-100 hover:-translate-y-1 transition-all duration-300">
-              <div className={`p-4 rounded-full text-white mb-6 ${tool.color} group-hover:scale-110 transition-transform duration-300`}>
-                <tool.icon className="w-8 h-8" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">{tool.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{tool.description}</p>
-            </Link>
-          ))}
-        </div>
-
-        <div className="text-center mt-20 mb-10 max-w-3xl mx-auto border-t border-gray-200 pt-16">
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-              {t('home.badgeLocal')}
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-              {t('home.badgeSecure')}
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100">
-              {t('home.badgeFree')}
-            </span>
-          </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-3 text-gray-900">
-            {t('home.heroTitle')}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-xl mx-auto">
-            {t('home.heroSubtitle')}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900 leading-tight">
+            {t('brand.heroTitle')}
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            {t('brand.heroDescription')}
           </p>
         </div>
+
+        {/* PDF 도구 섹션 */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <FileText className="w-6 h-6 text-blue-500" />
+            {t('home.pdfTools')}
+          </h2>
+          <ToolGrid tools={pdfTools} />
+        </section>
+
+        {/* 이미지 도구 섹션 */}
+        <section>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <ImageIcon className="w-6 h-6 text-rose-500" />
+            {t('home.imageTools')}
+          </h2>
+          <ToolGrid tools={imageTools} />
+        </section>
       </main>
 
       <footer className="bg-white border-t border-gray-200 mt-24 py-12 text-center text-gray-500">
-        <p>&copy; {new Date().getFullYear()} LocalPDF. {t('common.privacyNotice')}</p>
+        <p>{t('brand.copyright').replace('{year}', new Date().getFullYear().toString())}</p>
       </footer>
     </div>
   );
