@@ -125,7 +125,8 @@
     "newText": "새 텍스트"
   },
   "ocr": {
-    "selectPrompt": "PDF 또는 이미지 파일을 선택하세요",
+    "selectPrompt": "이미지 파일 선택",
+    "selectImage": "이미지 파일 선택",
     "buttonAction": "텍스트 추출하기",
     "processing": "텍스트 추출 중...",
     "success": "텍스트 추출 완료!",

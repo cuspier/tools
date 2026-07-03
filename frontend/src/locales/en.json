@@ -125,7 +125,8 @@
     "newText": "New Text"
   },
   "ocr": {
-    "selectPrompt": "Select PDF or Image file",
+    "selectPrompt": "Select Image File",
+    "selectImage": "Select Image File",
     "buttonAction": "Extract Text",
     "processing": "Extracting text...",
     "success": "Text Extracted Successfully!",

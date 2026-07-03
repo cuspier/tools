@@ -15,6 +15,11 @@ export default function OCRTool() {
   const [progress, setProgress] = useState<number>(0);
   const [copied, setCopied] = useState(false);
 
+  const activeFileRef = React.useRef<File | null>(null);
+  React.useEffect(() => {
+    activeFileRef.current = imageFile;
+  }, [imageFile]);
+
   useEffect(() => {
     return () => {
       if (imagePreviewUrl) {
@@ -27,10 +32,7 @@ export default function OCRTool() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
-      setImagePreviewUrl(prevUrl => {
-        if (prevUrl) URL.revokeObjectURL(prevUrl);
-        return URL.createObjectURL(file);
-      });
+      setImagePreviewUrl(URL.createObjectURL(file));
       setExtractedText('');
       setProgress(0);
       setCopied(false);
@@ -40,6 +42,7 @@ export default function OCRTool() {
   const processOCR = async () => {
     if (!imageFile) return;
     
+    const activeFile = imageFile;
     setIsProcessing(true);
     try {
       const { data: { text } } = await Tesseract.recognize(
@@ -53,11 +56,14 @@ export default function OCRTool() {
           }
         }
       );
+      if (activeFileRef.current !== activeFile) return; // ignore if reset or changed
       setExtractedText(text);
     } catch (error) {
+      if (activeFileRef.current !== activeFile) return;
       console.error("Error during OCR:", error);
       alert(t('ocr.alertError'));
     } finally {
+      if (activeFileRef.current !== activeFile) return;
       setIsProcessing(false);
     }
   };
@@ -83,10 +89,7 @@ export default function OCRTool() {
   };
 
   const handleReset = () => {
-    setImagePreviewUrl(prevUrl => {
-      if (prevUrl) URL.revokeObjectURL(prevUrl);
-      return null;
-    });
+    setImagePreviewUrl(null);
     setImageFile(null);
     setExtractedText('');
     setProgress(0);
@@ -106,7 +109,7 @@ export default function OCRTool() {
             <div className="mb-8">
               <label className="cursor-pointer inline-flex items-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-semibold transition shadow-lg shadow-indigo-200 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 outline-none">
                 <ImageIcon className="w-5 h-5" />
-                {t('common.selectFile')}
+                {t('ocr.selectImage')}
                 <input type="file" accept="image/*" className="sr-only" onChange={handleFileChange} />
               </label>
             </div>
@@ -159,6 +162,7 @@ export default function OCRTool() {
                 readOnly 
                 value={extractedText}
                 placeholder={t('ocr.placeholder')}
+                aria-label={t('ocr.success')}
                 className="w-full h-64 p-4 border border-gray-300 rounded-xl bg-gray-50 font-mono text-sm resize-y focus:ring-2 focus:ring-indigo-500 outline-none"
               />
               <div className="mt-8 text-center">

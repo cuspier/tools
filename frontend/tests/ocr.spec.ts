@@ -18,7 +18,7 @@ test.describe('OCR Tool End-to-End Tests', () => {
 
     // Wait for the file input to be available
     const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('label:has-text("Select PDF File")').click();
+    await page.locator('label:has-text("Select Image File")').click();
     const fileChooser = await fileChooserPromise;
     
     // Upload the screenshot
