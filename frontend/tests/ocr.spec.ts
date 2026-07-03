@@ -12,6 +12,13 @@ test.describe('OCR Tool End-to-End Tests', () => {
     await page.close();
   });
 
+  test.afterAll(async () => {
+    const fixturePath = path.join(__dirname, 'fixtures/screenshot.png');
+    if (fs.existsSync(fixturePath)) {
+      fs.unlinkSync(fixturePath);
+    }
+  });
+
   test('Should extract text from uploaded image', async ({ page }) => {
     test.setTimeout(120000);
     await page.goto('/ocr');

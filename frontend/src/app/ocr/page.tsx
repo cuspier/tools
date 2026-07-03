@@ -16,7 +16,7 @@ export default function OCRTool() {
   const [copied, setCopied] = useState(false);
 
   const activeFileRef = React.useRef<File | null>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     activeFileRef.current = imageFile;
   }, [imageFile]);
 
@@ -94,6 +94,7 @@ export default function OCRTool() {
     setExtractedText('');
     setProgress(0);
     setCopied(false);
+    setIsProcessing(false); // Reset processing state to allow subsequent attempts
   };
 
   return (
