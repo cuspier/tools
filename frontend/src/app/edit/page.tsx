@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import { FileUp, Plus, Save, Trash2, Layers } from 'lucide-react';
+import { FileUp, Plus, Save, Trash2, Layers, GripVertical } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -44,9 +44,6 @@ export default function EditPDF() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleReset = () => {
-    if (editedPdfUrl) {
-      URL.revokeObjectURL(editedPdfUrl);
-    }
     setFile(null);
     setEditedPdfUrl(null);
     setPdfBytes(null);
@@ -65,9 +62,6 @@ export default function EditPDF() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      if (editedPdfUrl) {
-        URL.revokeObjectURL(editedPdfUrl);
-      }
       setFile(selectedFile);
       setEditedPdfUrl(null);
       setAnnotations({});
@@ -113,12 +107,13 @@ export default function EditPDF() {
       return;
     }
 
+    let pdf: any = null;
     try {
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
       
       const loadingTask = pdfjsLib.getDocument(new Uint8Array(bytes.slice(0)));
-      const pdf = await loadingTask.promise;
+      pdf = await loadingTask.promise;
       const page = await pdf.getPage(activePage.originalPageIndex + 1);
 
       const viewport = page.getViewport({ scale: 1.0 });
@@ -140,6 +135,14 @@ export default function EditPDF() {
       }
     } catch (error) {
       console.error("Error rendering PDF:", error);
+    } finally {
+      if (pdf) {
+        try {
+          await pdf.destroy();
+        } catch (destroyError) {
+          console.error("Error destroying PDF document:", destroyError);
+        }
+      }
     }
   };
 
@@ -252,15 +255,19 @@ export default function EditPDF() {
     const newX = e.clientX - dragStartPos.x;
     const newY = e.clientY - dragStartPos.y;
 
-    // Clamp coordinates to bounds
-    const clampedX = Math.max(0, Math.min(newX, pdfDimensions.width - 80));
-    const clampedY = Math.max(0, Math.min(newY, pdfDimensions.height - 20));
-
     const activeAnnotations = annotations[pageId] || [];
+    const ann = activeAnnotations.find(a => a.id === draggedAnnId);
+    const widthOffset = ann?.width || 150;
+    const heightOffset = ann?.height || 60;
+
+    // Clamp coordinates to bounds
+    const clampedX = Math.max(0, Math.min(newX, pdfDimensions.width - widthOffset));
+    const clampedY = Math.max(0, Math.min(newY, pdfDimensions.height - heightOffset));
+
     setAnnotations({
       ...annotations,
-      [pageId]: activeAnnotations.map(ann => 
-        ann.id === draggedAnnId ? { ...ann, x: clampedX, y: clampedY } : ann
+      [pageId]: activeAnnotations.map(item => 
+        item.id === draggedAnnId ? { ...item, x: clampedX, y: clampedY } : item
       )
     });
   };
@@ -364,7 +371,16 @@ export default function EditPDF() {
                   <div
                     key={pageItem.id}
                     onClick={() => switchPage(index)}
-                    className={`group relative p-3 rounded-lg border-2 cursor-pointer transition flex items-center justify-between ${
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Page ${index + 1}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        switchPage(index);
+                      }
+                    }}
+                    className={`group relative p-3 rounded-lg border-2 cursor-pointer transition flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                       index === currentPageIndex
                         ? 'border-emerald-500 bg-emerald-50/50'
                         : 'border-gray-200 hover:border-emerald-300 hover:bg-gray-50'
@@ -379,7 +395,7 @@ export default function EditPDF() {
                     
                     <button
                       onClick={(e) => deletePage(index, e)}
-                      className="delete-page-btn text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition lg:opacity-0 group-hover:opacity-100"
+                      className="delete-page-btn text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition lg:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100"
                       title={t('edit.deletePage')}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -423,12 +439,24 @@ export default function EditPDF() {
                       }}
                       onClick={(e) => e.stopPropagation()}
                     >
+                      <div
+                        onMouseDown={(e) => handleMouseDown(e, ann.id)}
+                        className="cursor-move p-1.5 bg-gray-100 hover:bg-gray-200 border border-blue-400 border-r-0 rounded-l-lg flex items-center justify-center self-stretch select-none focus-within:ring-2 focus-within:ring-blue-500"
+                        title="Drag to Move"
+                        tabIndex={0}
+                        role="button"
+                        aria-label="Drag annotation to move"
+                        onKeyDown={(e) => {
+                          // Optionally support keyboard nudge or standard focus
+                        }}
+                      >
+                        <GripVertical className="w-4 h-4 text-gray-500" />
+                      </div>
                       <textarea
                         value={ann.text}
                         onChange={(e) => updateAnnotationText(ann.id, e.target.value)}
-                        onMouseDown={(e) => handleMouseDown(e, ann.id)}
                         onMouseUp={(e) => handleTextareaMouseUp(e, ann.id)}
-                        className="bg-white/80 backdrop-blur-xs border border-blue-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-black font-sans px-1 py-0.5 cursor-move text-base min-w-[80px]"
+                        className="bg-white/80 backdrop-blur-xs border border-blue-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-black font-sans px-1 py-0.5 cursor-text text-base min-w-[80px] rounded-l-none"
                         style={{ 
                           width: ann.width ? `${ann.width}px` : '150px',
                           height: ann.height ? `${ann.height}px` : '60px',
@@ -438,7 +466,7 @@ export default function EditPDF() {
                       />
                       <button
                         onClick={() => deleteAnnotation(ann.id)}
-                        className="delete-ann-btn ml-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow-sm shrink-0"
+                        className="delete-ann-btn ml-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 transition shadow-sm shrink-0"
                         title={t('edit.deleteAnnotation')}
                       >
                         <Plus className="w-3.5 h-3.5 rotate-45" />
