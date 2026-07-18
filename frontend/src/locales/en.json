@@ -164,5 +164,29 @@
     "heroDescription": "100% free, secure, local processing. Your files never leave your browser. PDF editing, merging, splitting, converting, and ID photos — with zero server uploads.",
     "localBadge": "100% local processing — files are never sent to the server.",
     "copyright": "© {year} Barotl. 100% browser-local processing — files are never sent to the server."
+  },
+  "share": {
+    "title": "Share to Device",
+    "description": "Send files directly to another device securely via P2P without uploading to any server.",
+    "dragPrompt": "Drag & drop files here, or click to select",
+    "selectedFile": "Selected file",
+    "waiting": "Waiting for connection...",
+    "radarTitle": "Nearby Devices (Same Wi-Fi)",
+    "radarDesc": "Open this page on another device connected to the same Wi-Fi to auto-detect.",
+    "qrTitle": "Remote or Scan QR Connection",
+    "qrDesc": "Scan this QR code with your mobile camera to open and receive immediately.",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "connecting": "Connecting...",
+    "sending": "Sending file...",
+    "receiving": "Receiving file...",
+    "completed": "Transfer completed!",
+    "failed": "Connection failed. Please verify that both devices have internet access and are not behind strict firewalls.",
+    "peerDisconnected": "Peer disconnected.",
+    "warningTitle": "Large File Warning",
+    "warningDesc": "Very large files might hit memory limits on some mobile browsers.",
+    "buttonAction": "Share to Device",
+    "detecting": "Scanning network...",
+    "sendAction": "Send File"
   }
 }

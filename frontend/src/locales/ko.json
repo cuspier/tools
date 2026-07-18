@@ -164,5 +164,29 @@
     "heroDescription": "100% 무료, 안전, 로컬 처리. 내 파일은 내 브라우저 안에서만. PDF 편집, 병합, 분할, 변환 그리고 증명사진까지 — 서버 업로드 없이.",
     "localBadge": "100% 로컬 처리 — 파일이 서버로 전송되지 않습니다",
     "copyright": "© {year} 바로틀(Barotl). 100% 브라우저 로컬 처리 — 파일이 서버로 전송되지 않습니다."
+  },
+  "share": {
+    "title": "기기 간 전송",
+    "description": "서버 업로드 없이 WebRTC P2P 방식으로 안전하게 다른 기기로 직접 파일을 보냅니다.",
+    "dragPrompt": "공유할 파일을 여기에 드래그하거나 클릭하여 선택하세요",
+    "selectedFile": "선택된 파일",
+    "waiting": "연결 대기 중...",
+    "radarTitle": "주변 기기 찾기 (동일 Wi-Fi)",
+    "radarDesc": "같은 Wi-Fi에 연결된 다른 기기에서 이 페이지를 띄우면 자동으로 탐색창에 표시됩니다.",
+    "qrTitle": "원격 또는 직접 QR 연결",
+    "qrDesc": "모바일 카메라로 이 QR 코드를 한 번 스캔하면 브라우저가 열리며 파일을 바로 전송받습니다.",
+    "copyLink": "링크 복사",
+    "copied": "복사 완료!",
+    "connecting": "연결 중...",
+    "sending": "파일 전송 중...",
+    "receiving": "파일 수신 중...",
+    "completed": "전송 완료!",
+    "failed": "연결에 실패했습니다. 양 기기의 인터넷 연결을 확인하고 방화벽 차단 여부를 체크해 주세요.",
+    "peerDisconnected": "상대방의 연결이 끊어졌습니다.",
+    "warningTitle": "대용량 전송 주의",
+    "warningDesc": "대용량 파일은 모바일 브라우저의 메모리 제한으로 인해 실패할 수 있습니다.",
+    "buttonAction": "기기 간 전송",
+    "detecting": "주변 기기 스캔 중...",
+    "sendAction": "파일 보내기"
   }
 }
