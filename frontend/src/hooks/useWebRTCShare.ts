@@ -81,6 +81,7 @@ export function useWebRTCShare(file: File | Blob | null, filename?: string) {
       fileReaderRef.current.abort();
       fileReaderRef.current = null;
     }
+    receivedChunksRef.current = []; // Clear chunks to prevent memory leaks
     receivedBytesRef.current = 0;
     isTransferringRef.current = false;
     setStats(prev => ({
@@ -176,7 +177,6 @@ export function useWebRTCShare(file: File | Blob | null, filename?: string) {
       if (dc) {
         dc.bufferedAmountLowThreshold = 65536;
       }
-      isTransferringRef.current = true;
       setStats(prev => ({ ...prev, status: 'transferring', progress: 0 }));
       lastProgressRef.current = { bytes: 0, time: Date.now() };
       receivedChunksRef.current = [];
@@ -271,7 +271,7 @@ export function useWebRTCShare(file: File | Blob | null, filename?: string) {
 
     conn.send({
       type: 'meta',
-      name: filename || (fileBlob as File).name || 'shared_file',
+      name: filename || ('name' in fileBlob ? (fileBlob as File).name : 'shared_file'),
       size: fileBlob.size,
       mime: fileBlob.type,
     });
@@ -325,6 +325,9 @@ export function useWebRTCShare(file: File | Blob | null, filename?: string) {
       isTransferringRef.current = false;
       console.error('FileReader error:', err);
       setStats(prev => ({ ...prev, status: 'failed' }));
+      if (connRef.current) {
+        connRef.current.close();
+      }
     };
 
     const sendChunk = (buffer: ArrayBuffer) => {
