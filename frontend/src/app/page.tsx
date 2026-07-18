@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { FileUp, Scissors, FilePlus2, RefreshCw, Type, Image as ImageIcon, FileText, Camera } from 'lucide-react';
+import { FileUp, Scissors, FilePlus2, RefreshCw, Type, Image as ImageIcon, FileText, Camera, Share2 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -68,6 +68,16 @@ const imageToolsConfig = [
   },
 ];
 
+const shareToolsConfig = [
+  {
+    titleKey: 'tools.share.title',
+    descriptionKey: 'tools.share.description',
+    icon: Share2,
+    href: '/share',
+    color: 'bg-purple-500',
+  },
+];
+
 interface ToolItem {
   title: string;
   description: string;
@@ -111,6 +121,12 @@ export default function Home() {
     description: t(tool.descriptionKey),
   }));
 
+  const shareTools = shareToolsConfig.map(tool => ({
+    ...tool,
+    title: t(tool.titleKey),
+    description: t(tool.descriptionKey),
+  }));
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-blue-200">
       <Header />
@@ -135,12 +151,21 @@ export default function Home() {
         </section>
 
         {/* 이미지 도구 섹션 */}
-        <section>
+        <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <ImageIcon className="w-6 h-6 text-rose-500" />
             {t('home.imageTools')}
           </h2>
           <ToolGrid tools={imageTools} />
+        </section>
+
+        {/* 공유 및 전송 섹션 */}
+        <section>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <Share2 className="w-6 h-6 text-purple-500" />
+            {t('home.shareTools')}
+          </h2>
+          <ToolGrid tools={shareTools} />
         </section>
       </main>
 

@@ -41,6 +41,10 @@
     "idPhoto": {
       "title": "ID Photo Automation",
       "description": "Remove backgrounds automatically and create photos fitting passport, half-namecard, or driver's license specifications."
+    },
+    "share": {
+      "title": "Share to Device (P2P)",
+      "description": "Transfer large files directly to mobile or other devices without any server upload."
     }
   },
   "home": {
@@ -50,7 +54,8 @@
     "badgeSecure": "⚡ Zero Server Uploads",
     "badgeFree": "✨ Free & Unlimited",
     "pdfTools": "PDF Tools",
-    "imageTools": "Image Tools"
+    "imageTools": "Image Tools",
+    "shareTools": "Share & Transfer"
   },
   "merge": {
     "selectPrompt": "Select PDF files to merge",

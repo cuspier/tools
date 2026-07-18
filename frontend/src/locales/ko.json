@@ -41,6 +41,10 @@
     "idPhoto": {
       "title": "증명사진 자동화",
       "description": "배경 제거 후 여권·반명함·운전면허 등 규격에 맞게 증명사진을 완성하세요. 편의점 인쇄용 PDF도 지원합니다."
+    },
+    "share": {
+      "title": "기기 간 전송 (P2P)",
+      "description": "서버 업로드 없이 다른 기기(모바일 등)로 직접 대용량 파일을 무제한 전송합니다."
     }
   },
   "home": {
@@ -50,7 +54,8 @@
     "badgeSecure": "⚡ 서버 전송 없음",
     "badgeFree": "✨ 완전 무료",
     "pdfTools": "PDF 도구",
-    "imageTools": "이미지 도구"
+    "imageTools": "이미지 도구",
+    "shareTools": "공유 및 전송"
   },
   "merge": {
     "selectPrompt": "병합할 PDF 파일을 선택하세요",
