@@ -187,6 +187,7 @@
     "warningDesc": "Very large files might hit memory limits on some mobile browsers.",
     "buttonAction": "Share to Device",
     "detecting": "Scanning network...",
-    "sendAction": "Send File"
+    "sendAction": "Send File",
+    "newShare": "Share another file"
   }
 }

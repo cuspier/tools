@@ -187,6 +187,7 @@
     "warningDesc": "대용량 파일은 모바일 브라우저의 메모리 제한으로 인해 실패할 수 있습니다.",
     "buttonAction": "기기 간 전송",
     "detecting": "주변 기기 스캔 중...",
-    "sendAction": "파일 보내기"
+    "sendAction": "파일 보내기",
+    "newShare": "새 파일 공유"
   }
 }
