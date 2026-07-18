@@ -62,6 +62,9 @@ test.describe('Standalone Share Page End-to-End Tests', () => {
     const shareUrl = await shareInput.inputValue();
     expect(shareUrl).toContain('#peer=');
     
+    // Give PeerJS signaling server a few seconds to propagate peer ID registration
+    await senderPage.waitForTimeout(3000);
+    
     // 3. Initialize a Receiver Page (using a separate browser context) and navigate to the extracted share URL
     const receiverContext = await browser.newContext();
     const receiverPage = await receiverContext.newPage();

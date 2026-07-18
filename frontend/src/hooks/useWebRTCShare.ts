@@ -340,7 +340,7 @@ export function useWebRTCShare(file: File | Blob | null, filename?: string) {
         chunk: buffer,
         offset: offset,
         total: fileBlob.size,
-        name: filename || (fileBlob as File).name || 'shared_file',
+        name: filename || ('name' in fileBlob ? (fileBlob as File).name : 'shared_file'),
         mime: fileBlob.type,
       });
 
