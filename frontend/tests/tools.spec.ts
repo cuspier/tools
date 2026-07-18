@@ -33,6 +33,26 @@ test.describe('LocalPDF Tools End-to-End Tests', () => {
     
     // Check for success message
     await expect(page.locator('text=PDFs Merged Successfully!')).toBeVisible();
+
+    // Check that "Share to Device" button is visible
+    const shareButton = page.locator('button:has-text("Share to Device")').or(page.locator('button:has-text("기기 간 전송")'));
+    await expect(shareButton).toBeVisible();
+
+    // Click "Share to Device" button
+    await shareButton.click();
+
+    // Verify ShareModal is open
+    await expect(page.locator('role=dialog')).toBeVisible();
+    await expect(page.locator('role=dialog').locator('text=Share to Device').or(page.locator('role=dialog').locator('text=기기 간 전송'))).toBeVisible();
+
+    // Verify that the file name in ShareModal card is "merged_document.pdf"
+    await expect(page.locator('role=dialog').locator('text=merged_document.pdf')).toBeVisible();
+
+    // Close the ShareModal
+    await page.locator('role=dialog').locator('button[aria-label="Close"]').click();
+    
+    // Verify ShareModal is closed
+    await expect(page.locator('role=dialog')).not.toBeVisible();
   });
 
   test('Split PDF - Should extract pages and download successfully', async ({ page }) => {

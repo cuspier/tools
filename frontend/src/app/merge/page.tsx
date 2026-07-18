@@ -5,12 +5,15 @@ import { PDFDocument } from 'pdf-lib';
 import { FileUp, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useTranslation } from '@/hooks/useTranslation';
+import { ShareModal } from '@/components/ShareModal';
 
 export default function MergePDF() {
   const { t } = useTranslation();
   const [files, setFiles] = useState<File[]>([]);
   const [isMerging, setIsMerging] = useState(false);
   const [mergedPdfUrl, setMergedPdfUrl] = useState<string | null>(null);
+  const [mergedBlob, setMergedBlob] = useState<Blob | null>(null);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -25,6 +28,8 @@ export default function MergePDF() {
       URL.revokeObjectURL(mergedPdfUrl);
     }
     setMergedPdfUrl(null);
+    setMergedBlob(null);
+    setIsShareOpen(false);
     setFiles([]);
   };
 
@@ -68,6 +73,7 @@ export default function MergePDF() {
       const mergedPdfBytes = await mergedPdf.save();
       const blob = new Blob([mergedPdfBytes as unknown as BlobPart], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
+      setMergedBlob(blob);
       setMergedPdfUrl(url);
     } catch (error) {
       console.error("Error merging PDFs:", error);
@@ -136,13 +142,21 @@ export default function MergePDF() {
                 <FileUp className="w-10 h-10" />
               </div>
               <h3 className="text-2xl font-bold mb-6 text-gray-900">{t('merge.success')}</h3>
-              <a 
-                href={mergedPdfUrl} 
-                download="merged_document.pdf"
-                className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition shadow-lg shadow-blue-200"
-              >
-                {t('merge.downloadAction')}
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a 
+                  href={mergedPdfUrl} 
+                  download="merged_document.pdf"
+                  className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-full font-bold transition shadow-lg shadow-green-200 flex items-center gap-2"
+                >
+                  <span>⬇️</span> {t('merge.downloadAction')}
+                </a>
+                <button
+                  onClick={() => setIsShareOpen(true)}
+                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition shadow-lg shadow-blue-200 flex items-center gap-2"
+                >
+                  <span>📱</span> {t('share.buttonAction')}
+                </button>
+              </div>
               <div className="mt-8">
                 <button onClick={handleReset} className="text-gray-500 hover:text-blue-600 font-medium">
                   {t('merge.more')}
@@ -152,6 +166,16 @@ export default function MergePDF() {
           )}
         </div>
       </main>
+
+      {/* Share Modal popup */}
+      {isShareOpen && (
+        <ShareModal 
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          file={mergedBlob}
+          filename="merged_document.pdf"
+        />
+      )}
     </div>
   );
 }
