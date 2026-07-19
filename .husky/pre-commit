@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Validating AI Readiness and Context File Paths..."
+python .agents/skills/ai-readiness-cartography/scripts/score.py . --quiet

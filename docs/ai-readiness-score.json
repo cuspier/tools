@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "repo": "tools",
+    "path": "C:\\workspace\\tools",
+    "scored_at": "2026-07-04",
+    "git_branch": "feature/frontend-converter",
+    "rubric_version": "v2-100pt",
+    "modules_total": 1,
+    "context_files_total": 4,
+    "large_files_300plus": 2
+  },
+  "total": 81,
+  "grade": "AI-Ready",
+  "grade_color": "green",
+  "categories": {
+    "A": {
+      "name": "AI Navigation & Coverage",
+      "score": 15,
+      "max": 15,
+      "evidence": {
+        "core_modules": 1,
+        "covered_modules": 1,
+        "coverage_ratio": 1.0,
+        "root_claude": "CLAUDE.md"
+      },
+      "sub_scores": {},
+      "findings": []
+    },
+    "B": {
+      "name": "Context Document Quality",
+      "score": 12,
+      "max": 20,
+      "evidence": {
+        "context_files": 4,
+        "max_lines": 50,
+        "min_lines": 5
+      },
+      "sub_scores": {
+        "B1_Conciseness": 3,
+        "B2_QuickCommands": 2,
+        "B3_KeyFiles": 3,
+        "B4_NonObvious": 1,
+        "B5_CrossRefs": 3
+      },
+      "findings": [
+        "bash 코드블록이 부족 — quick command 보강 필요",
+        "Why/Note/Gotcha 같은 hidden rule 마커 부족"
+      ]
+    },
+    "C": {
+      "name": "Tribal Knowledge Externalization",
+      "score": 20,
+      "max": 20,
+      "evidence": {
+        "memory_md": false,
+        "adr": true,
+        "modules_total": 1,
+        "q1_owns": 1,
+        "q2_patterns": 1,
+        "q3_nonobvious": 1,
+        "q4_deps": 1
+      },
+      "sub_scores": {
+        "C_Q1_Owns": 4,
+        "C_Q2_Patterns": 4,
+        "C_Q3_NonObvious": 4,
+        "C_Q4_Dependencies": 4,
+        "C_Q5_TribalStore": 4
+      },
+      "findings": []
+    },
+    "D": {
+      "name": "Cross-Module Dependency Mapping",
+      "score": 13,
+      "max": 15,
+      "evidence": {
+        "architecture_doc": true,
+        "mermaid_diagrams": true,
+        "context_with_deps_section": 2,
+        "monorepo_workspace": false
+      },
+      "sub_scores": {},
+      "findings": []
+    },
+    "E": {
+      "name": "Verification & Quality Gates",
+      "score": 11,
+      "max": 15,
+      "evidence": {
+        "ref_total": 14,
+        "ref_broken": 0,
+        "codeowners": true,
+        "pr_template": true,
+        "ci_workflows": true,
+        "husky": true,
+        "evals_dir": false
+      },
+      "sub_scores": {
+        "E1_RefAccuracy": 5,
+        "E2_CriticReview": 4,
+        "E3_TaskValidation": 2,
+        "E4_PromptTests": 0
+      },
+      "findings": [
+        "agent eval / prompt test 디렉터리 없음 — AI 회귀 catch 없음"
+      ]
+    },
+    "F": {
+      "name": "Freshness & Self-Maintenance",
+      "score": 10,
+      "max": 10,
+      "evidence": {
+        "drifted_modules": 0,
+        "measurable_modules": 1,
+        "drift_ratio": 0.0,
+        "ctx_validation_workflow": true,
+        "hook_validates_paths": true
+      },
+      "sub_scores": {},
+      "findings": []
+    },
+    "G": {
+      "name": "Agent Performance Outcomes",
+      "score": 0,
+      "max": 5,
+      "evidence": {
+        "eval_dirs": [],
+        "metric_files": [],
+        "telemetry_hint": false
+      },
+      "sub_scores": {},
+      "findings": [
+        "agent eval / benchmark 디렉터리·결과 파일 부재 — 성능 측정 인프라 없음",
+        "AI usage telemetry 단서 없음 (session log / OpenTelemetry)"
+      ]
+    }
+  },
+  "insights": [
+    "총점 81/100 · 등급 AI-Ready",
+    "가장 낮은 카테고리: G Agent Performance Outcomes 0/5",
+    "가장 낮은 카테고리: B Context Document Quality 12/20"
+  ],
+  "actions": [
+    {
+      "title": "god file 2개 분할 (>500 lines): frontend/src/app/edit/page.tsx (529), frontend/src/app/id-photo/page.tsx (508)",
+      "category": "B",
+      "effort": "L",
+      "effort_hours": 5.0,
+      "impact": "파일당 ~5K-10K token 절감 + 편집 정확도 ↑",
+      "impact_score": 6,
+      "priority": 1.2
+    },
+    {
+      "title": "evals/ 디렉터리 + 대표 task pass-rate 측정 도입",
+      "category": "G",
+      "effort": "L",
+      "effort_hours": 6.0,
+      "impact": "AI 회귀 측정 가능 — 개선 ROI 자체를 정량화",
+      "impact_score": 6,
+      "priority": 1.0
+    }
+  ],
+  "extras": {
+    "modules": [
+      {
+        "path": "C:\\workspace\\tools\\frontend",
+        "rel": "frontend",
+        "code_files": 22,
+        "has_context": true,
+        "context_file": "C:\\workspace\\tools\\frontend\\CLAUDE.md",
+        "context_kind": "CLAUDE.md"
+      }
+    ],
+    "large_files": [
+      {
+        "path": "frontend/src/app/edit/page.tsx",
+        "lines": 529
+      },
+      {
+        "path": "frontend/src/app/id-photo/page.tsx",
+        "lines": 508
+      }
+    ]
+  }
+}

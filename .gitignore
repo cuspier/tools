@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Agent directories and scratchpads
+.agents
+.scratch
+.superpowers
+agent
+

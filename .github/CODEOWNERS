@@ -1,0 +1,6 @@
+# CODEOWNERS
+# This file defines the owners of paths in the repository.
+
+*       @lead-engineer
+/frontend/      @frontend-team
+/docs/          @technical-writers
